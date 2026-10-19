@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="id" style="">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+  <title>DeepCheck AI - Verifikasi Media &amp; Cek Deepfake</title>
+  <!-- Tailwind CSS CDN with forms and container queries -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <!-- Tailwind Configuration -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0f7ff',
+              100: '#e0effe',
+              500: '#0284c7',
+              600: '#0369a1',
+              700: '#1d4ed8',
+              800: '#1e40af',
+              900: '#1e3a8a'
+            },
+            accent: {
+              blue: '#2563eb',
+              indigo: '#4f46e5',
+              emerald: '#059669',
+              amber: '#d97706'
+            }
+          },
+          fontFamily: {
+            sans: ['-apple-system', 'BlinkMacSystemFont', '"SF Pro Display"', '"SF Pro Text"', 'Inter', 'Segoe UI', 'Roboto', 'sans-serif'],
+          },
+          boxShadow: {
+            'ios-card': '0 2px 10px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02)',
+            'ios-elevated': '0 8px 30px rgba(0, 0, 0, 0.06)',
+            'glow-blue': '0 4px 20px -2px rgba(37, 99, 235, 0.35)'
+          }
+        }
+      }
+    }
+  </script>
+  <!-- Typography Styles -->
+  <style data-purpose="typography">
+    body {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    }
+  </style>
+  <!-- Layout & Custom Details -->
+  <style data-purpose="layout-and-effects">
+    .hide-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+
+    .hide-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    .radial-gauge {
+      background: conic-gradient(#10b981 0% 98%, #e2e8f0 98% 100%);
+    }
+  </style>
+</head>
+
+<body class="bg-[#f8faff] text-slate-800 font-sans antialiased selection:bg-blue-500 selection:text-white pb-12">
+  <!-- Outer Mobile Container wrapper (optimized for iPhone / ~390px - 430px) -->
+  <div class="max-w-[430px] mx-auto min-h-screen bg-slate-50/50 flex flex-col border-x border-slate-200/60 shadow-xl">
+    <!-- BEGIN: MainHeader -->
+    <header
+      class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-100 px-4 py-3 flex items-center justify-between">
+      <!-- DeepCheck Logo and Info -->
+      <div class="flex items-center space-x-2">
+        <div
+          class="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white shadow-sm shadow-blue-500/30">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+              stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"></path>
+          </svg>
+        </div>
+        <div>
+          <div class="flex items-center gap-1.5 leading-none">
+            <span class="font-bold text-[16px] tracking-tight text-slate-900">DeepCheck</span>
+
+          </div>
+          <span class="text-[10px] text-slate-400 font-medium block mt-0.5">PTIK Kelompok 4</span>
+        </div>
+      </div>
+      <!-- Action: History Button -->
+      <button
+        class="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200/80 active:bg-slate-200 transition-colors"
+        type="button">
+        <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round"
+            stroke-width="2"></path>
+        </svg>
+        <span class="">Riwayat</span>
+        <span
+          class="w-4 h-4 rounded-full bg-blue-600 text-[10px] text-white flex items-center justify-center font-bold">3</span>
+      </button>
+    </header>
+    <!-- END: MainHeader -->
+    <main class="px-4 py-5 flex-1 flex flex-col space-y-5">
+      <!-- BEGIN: HeroSection -->
+      <section class="text-center pt-2 relative">
+        <!-- Floating badge pill -->
+        <div
+          class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-50 border border-indigo-100/80 mb-3 shadow-xs">
+          <span class="w-2 h-2 rounded-full bg-indigo-600 animate-pulse"></span>
+          <span class="text-[11px] font-semibold text-indigo-700 tracking-wide uppercase">9 Jalur Analisis AI</span>
+        </div>
+        <!-- Main Title -->
+        <h1 class="text-2xl font-black text-slate-900 leading-[1.2] tracking-tight mb-2.5">
+          Verifikasi Media &amp; Cek Deepfake <br>
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-500">
+            Dalam Hitungan Detik
+          </span>
+        </h1>
+        <!-- Accuracy indicator widget -->
+        <div
+          class="my-2 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200">
+          <span class="text-[12px] font-black text-emerald-600">94%</span>
+          <span class="text-[10px] text-slate-600 font-medium">Akurasi Terkalibrasi</span>
+        </div>
+        <!-- Descriptive Subtitle -->
+        <p class="text-xs text-slate-600 leading-relaxed px-1 mt-1 text-balance">
+          Periksa tautan berita, poster gambar, rekaman video, atau rekaman suara sebelum Anda membagikannya. DeepCheck
+          AI menganalisis artefak visual, pola bahasa hoaks, dan rujukan sumber resmi secara terpadu.
+        </p>
+      </section>
+      <!-- END: HeroSection -->
+      <!-- BEGIN: InputFormCard -->
+      <section class="bg-white rounded-2xl p-4 shadow-ios-card border border-slate-100 space-y-4">
+        <!-- Segmented Tab Navigation -->
+        <div class="grid grid-cols-3 gap-1 bg-slate-100/90 p-1 rounded-xl text-xs font-semibold">
+          <button
+            class="flex items-center justify-center gap-1.5 py-2 px-2 rounded-lg bg-white text-blue-600 shadow-xs border border-black/5"
+            type="button">
+            <svg class="w-3.5 h-3.5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
+                stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+            </svg>
+            <span class="text-[11px] font-medium">Tautan / URL</span>
+          </button>
+          <button
+            class="flex items-center justify-center gap-1 py-2 px-2 rounded-lg text-slate-500 hover:text-slate-800"
+            type="button">
+            <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+            </svg>
+            <span class="text-[11px] font-medium truncate">Unggah</span>
+          </button>
+          <button
+            class="flex items-center justify-center gap-1 py-2 px-2 rounded-lg text-slate-500 hover:text-slate-800"
+            type="button">
+            <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"
+                stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+            </svg>
+            <span class="text-[11px] font-medium truncate">Pesan / Teks</span>
+          </button>
+        </div>
+        <!-- URL Input Header & Badges -->
+        <div class="space-y-1.5">
+          <div class="flex items-center justify-between">
+            <label class="text-[11px] font-semibold text-slate-700">Tempel URL Berita / Media</label>
+          </div>
+          <!-- Platform badges -->
+          <div class="flex items-center gap-1 overflow-x-auto hide-scrollbar pb-1">
+            <span
+              class="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full font-medium whitespace-nowrap">TikTok</span>
+            <span
+              class="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full font-medium whitespace-nowrap">Instagram</span>
+            <span
+              class="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full font-medium whitespace-nowrap">YouTube</span>
+            <span
+              class="text-[10px] bg-blue-50 text-blue-700 border border-blue-200 px-2 py-0.5 rounded-full font-medium whitespace-nowrap">Media
+              Pers</span>
+          </div>
+          <!-- Input field container -->
+          <div class="relative flex items-center">
+            <span class="absolute left-3 text-slate-400">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
+                  stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+              </svg>
+            </span>
+            <input
+              class="w-full pl-9 pr-16 py-2.5 text-xs text-slate-700 bg-slate-50/70 border border-slate-200 rounded-xl focus:bg-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+              readonly="" type="text" value="https://www.bbc.com/indonesia/articles/c6jrw11jp3rdo">
+            <button
+              class="absolute right-1.5 top-1.5 bottom-1.5 px-2.5 text-[11px] font-semibold bg-white border border-slate-200 rounded-lg text-slate-600 shadow-2xs hover:bg-slate-50"
+              type="button">
+              Tempel
+            </button>
+          </div>
+        </div>
+        <!-- Additional Context Input -->
+        <div class="space-y-1">
+          <label class="text-[11px] font-semibold text-slate-600">Konteks atau Narasi Tambahan dari Pengunggah
+            (Opsional)</label>
+          <textarea
+            class="w-full text-xs text-slate-700 bg-slate-50/70 border border-slate-200 rounded-xl p-2.5 focus:bg-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 resize-none placeholder:text-slate-400 placeholder:text-[11px]"
+            placeholder="Masukkan konteks disini" rows="2"></textarea>
+        </div>
+        <!-- Primary CTA Button -->
+        <button
+          class="w-full py-3 px-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl font-bold text-xs shadow-glow-blue active:scale-[0.98] transition-transform flex items-center justify-center gap-2"
+          type="button">
+          <span class="">Periksa Keaslian Sekarang</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path>
+          </svg>
+        </button>
+      </section>
+      <!-- END: InputFormCard -->
+      <!-- BEGIN: HumanOversightNotice -->
+      <section class="bg-amber-50/90 border border-amber-200/80 rounded-xl p-3 flex gap-2.5 items-start">
+        <div class="w-5 h-5 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center shrink-0 mt-0.5">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round"
+              stroke-linejoin="round" stroke-width="2.5"></path>
+          </svg>
+        </div>
+        <div class="space-y-0.5 text-slate-700">
+          <h4 class="text-[11px] font-bold text-amber-900 leading-tight">Prinsip Human Oversight: Skor adalah Bantuan
+            Berpikir, Bukan Vonis Mutlak</h4>
+          <p class="text-[10px] text-amber-800/90 leading-normal">
+            Skor ini adalah indikator probabilistik berbasis kecerdasan buatan untuk membantu berpikir kritis, bukan
+            merupakan vonis kebenaran mutlak. Keputusan akhir tetap berada di tangan Anda sebagai pengguna yang bijak.
+          </p>
+        </div>
+      </section>
+      <!-- END: HumanOversightNotice -->
+      <!-- BEGIN: DiagnosticSummaryCard -->
+      <section class="bg-white rounded-2xl p-4 border border-slate-100 shadow-ios-card space-y-4">
+        <!-- Top Half: Gauge & Verdict -->
+        <div class="flex items-center gap-4 pb-3 border-b border-slate-100">
+          <!-- Circular Score Visual Indicator -->
+          <div
+            class="relative w-20 h-20 shrink-0 rounded-full radial-gauge flex items-center justify-center shadow-inner">
+            <div class="w-[66px] h-[66px] rounded-full bg-white flex flex-col items-center justify-center shadow-xs">
+              <span class="text-xl font-black text-slate-900 tracking-tight leading-none">98<span
+                  class="text-xs font-bold">%</span></span>
+              <span class="text-[7.5px] uppercase tracking-wider text-slate-400 font-extrabold mt-0.5">Skor Asli</span>
+            </div>
+          </div>
+          <!-- Verdict Text Content -->
+          <div class="space-y-1">
+            <span
+              class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-[10px] font-semibold border border-emerald-200">
+              <svg class="w-2.5 h-2.5" fill="currentColor" viewBox="0 0 20 20">
+                <path clip-rule="evenodd"
+                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                  fill-rule="evenodd"></path>
+              </svg>
+              Kategori: Risiko Rendah
+            </span>
+            <h3 class="text-xs font-bold text-slate-900 leading-snug">
+              Konten berita terverifikasi sah berasal dari media pers kredibel dengan narasi faktual yang konsisten.
+            </h3>
+            <p class="text-[10px] text-emerald-600 font-medium">Risiko Manipulasi Rendah (Cenderung Asli)</p>
+          </div>
+        </div>
+        <!-- Bottom Diagnostic Meta Card -->
+        <div class="bg-slate-50/80 rounded-xl p-3 border border-slate-100/90 space-y-3">
+          <div>
+            <span class="text-[9.5px] font-bold text-slate-400 uppercase tracking-wider block mb-1.5">Metode
+              Pemeriksaan</span>
+            <div class="flex flex-wrap gap-1.5">
+              <span
+                class="text-[10px] px-2 py-0.5 bg-white border border-slate-200 rounded-md text-blue-600 font-medium">Klasifikasi
+                Media</span>
+              <span
+                class="text-[10px] px-2 py-0.5 bg-white border border-slate-200 rounded-md text-blue-600 font-medium">Pola
+                Narasi NLP</span>
+              <span
+                class="text-[10px] px-2 py-0.5 bg-white border border-slate-200 rounded-md text-blue-600 font-medium">Verifikasi
+                Sumber Resmi</span>
+              <span
+                class="text-[10px] px-2 py-0.5 bg-white border border-slate-200 rounded-md text-blue-600 font-medium">Sintesis
+                Terpadu</span>
+            </div>
+          </div>
+          <div class="flex items-center justify-between pt-2 border-t border-slate-200/50">
+            <div>
+              <span class="text-[9px] uppercase tracking-wider text-slate-400 font-semibold block">Waktu Analisis</span>
+              <span class="text-xs font-black text-slate-800">4.01 detik</span>
+            </div>
+            <button
+              class="inline-flex items-center gap-1 px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-medium text-slate-700 shadow-2xs hover:bg-slate-50"
+              type="button">
+              <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"
+                  stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+              </svg>
+              <span class="">Bagikan</span>
+            </button>
+          </div>
+        </div>
+      </section>
+      <!-- END: DiagnosticSummaryCard -->
+      <!-- BEGIN: 4PillarsSection -->
+      <section class="space-y-2">
+        <div class="flex items-center justify-between px-0.5">
+          <h2 class="text-xs font-bold text-slate-800 uppercase tracking-wider">Rincian 4 Pilar Indikator Keaslian</h2>
+          <span class="text-[10px] text-slate-400">Multi-vektor AI</span>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <!-- Pillar 1 -->
+          <div class="bg-white p-3 rounded-xl border border-slate-100 shadow-2xs flex flex-col justify-between">
+            <div class="flex items-start justify-between mb-1.5">
+              <div class="w-6 h-6 rounded-md bg-blue-50 text-blue-600 flex items-center justify-center">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
+                    stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+                </svg>
+              </div>
+              <span class="text-xs font-black text-slate-800">85%</span>
+            </div>
+            <h4 class="text-[11px] font-bold text-slate-800 leading-tight">Integritas Visual &amp; Audio</h4>
+            <div class="mt-2 flex items-center justify-between text-[9px] text-slate-400">
+              <span class="truncate">Artefak AI</span>
+              <span class="text-emerald-600 font-semibold">Terverifikasi</span>
+            </div>
+          </div>
+          <!-- Pillar 2 -->
+          <div class="bg-white p-3 rounded-xl border border-slate-100 shadow-2xs flex flex-col justify-between">
+            <div class="flex items-start justify-between mb-1.5">
+              <div class="w-6 h-6 rounded-md bg-indigo-50 text-indigo-600 flex items-center justify-center">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                    stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+                </svg>
+              </div>
+              <span class="text-xs font-black text-slate-800">93%</span>
+            </div>
+            <h4 class="text-[11px] font-bold text-slate-800 leading-tight">Klaim Faktual &amp; Logika</h4>
+            <div class="mt-2 flex items-center justify-between text-[9px] text-slate-400">
+              <span class="truncate">Konsistensi data</span>
+              <span class="text-emerald-600 font-semibold">Terverifikasi</span>
+            </div>
+          </div>
+          <!-- Pillar 3 -->
+          <div class="bg-white p-3 rounded-xl border border-slate-100 shadow-2xs flex flex-col justify-between">
+            <div class="flex items-start justify-between mb-1.5">
+              <div class="w-6 h-6 rounded-md bg-emerald-50 text-emerald-600 flex items-center justify-center">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                    stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+                </svg>
+              </div>
+              <span class="text-xs font-black text-slate-800">85%</span>
+            </div>
+            <h4 class="text-[11px] font-bold text-slate-800 leading-tight">Rujukan Sumber Kredibel</h4>
+            <div class="mt-2 flex items-center justify-between text-[9px] text-slate-400">
+              <span class="truncate">Korelasi pers</span>
+              <span class="text-emerald-600 font-semibold">Terverifikasi</span>
+            </div>
+          </div>
+          <!-- Pillar 4 -->
+          <div class="bg-white p-3 rounded-xl border border-slate-100 shadow-2xs flex flex-col justify-between">
+            <div class="flex items-start justify-between mb-1.5">
+              <div class="w-6 h-6 rounded-md bg-purple-50 text-purple-600 flex items-center justify-center">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+                    stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+                </svg>
+              </div>
+              <span class="text-xs font-black text-slate-800">108%</span>
+            </div>
+            <h4 class="text-[11px] font-bold text-slate-800 leading-tight">Pola Bahasa &amp; Retorika</h4>
+            <div class="mt-2 flex items-center justify-between text-[9px] text-slate-400">
+              <span class="truncate">Indikasi provokasi</span>
+              <span class="text-emerald-600 font-semibold">Terverifikasi</span>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- END: 4PillarsSection -->
+      <!-- BEGIN: AnalysisExplanationSection -->
+      <section class="bg-white rounded-2xl p-4 border border-slate-100 shadow-ios-card space-y-3">
+        <div class="flex items-center justify-between pb-2 border-b border-slate-100">
+          <div class="flex items-center gap-1.5">
+            <div class="w-5 h-5 rounded bg-blue-100 text-blue-700 flex items-center justify-center">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                  stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+              </svg>
+            </div>
+            <h3 class="text-xs font-bold text-slate-900">Alasan &amp; Penjelasan Hasil Analisis</h3>
+          </div>
+          <span
+            class="text-[10px] bg-blue-50 text-blue-700 font-semibold px-2 py-0.5 rounded-full border border-blue-200">
+            Analisis Multidimensi
+          </span>
+        </div>
+        <div class="text-[11px] text-slate-600 leading-relaxed space-y-2.5">
+          <p class="">
+            Berdasarkan hasil analisis sinyal forensik lintas router, tautan artikel yang dievaluasi terbukti berasal
+            dari kanal media berita terkemuka dan diakui secara nasional maupun internasional (BBC News Indonesia).
+            Seluruh klaim yang dipaparkan, termasuk uji coba program Makan Bergizi Gratis (MBG) dengan model prasmanan,
+            didukung oleh data primer dan sekunder yang konsisten tanpa indikasi manipulasi informasi atau rekayasa
+            narasi.
+          </p>
+          <p class="">
+            Penelusuran rantai bukti menunjukkan keselarasan penuh antara judul artikel, isi pemberitaan, serta laporan
+            resmi dari Badan Gizi Nasional terkait pelaksanaan uji coba dapur SPPG di Kabupaten Bandung. Tidak ditemukan
+            adanya anomali pada struktur teks, pola manipulasi NLP, maupun indikasi penyebaran disinformasi, yang
+            mengonfirmasi bahwa informasi ini disajikan secara objektif, berimbang, dan dapat dipertanggungjawabkan.
+          </p>
+          <p class="">
+            Evaluasi terhadap aspek retorika dan bahasa menunjukkan gaya penulisan jurnalistik standar tanpa adanya
+            muatan provokasi emosional, sensasionalisme berlebihan, ataupun upaya penggiringan opini yang berbahaya.
+            Risiko dampak dari penyebaran informasi ini tergolong sangat aman dan konstruktif bagi pembaca, sehingga
+            masyarakat dapat menjadikannya sebagai referensi tepercaya tanpa kekhawatiran adanya distorsi fakta.
+          </p>
+        </div>
+      </section>
+      <!-- END: AnalysisExplanationSection -->
+      <!-- BEGIN: ForensicFindingsSection -->
+      <section class="space-y-3">
+        <!-- Findings Header with Filter Pills -->
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="text-xs font-bold text-slate-900 leading-tight">Indikator Temuan Forensik</h2>
+            <span class="text-[10px] text-slate-400">Evaluasi mendalam 8 dimensi integritas data</span>
+          </div>
+          <div class="flex gap-1">
+            <button class="px-2.5 py-1 text-[10px] font-bold rounded-lg bg-slate-800 text-white shadow-2xs"
+              type="button">Semua (8)</button>
+            <button
+              class="px-2.5 py-1 text-[10px] font-bold rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200"
+              type="button">Valid (8)</button>
+          </div>
+        </div>
+        <!-- 8 Forensic Cards Stack -->
+        <div class="space-y-2">
+          <!-- Card 1 -->
+          <article class="bg-white p-3 rounded-xl border border-slate-100 shadow-2xs space-y-2">
+            <div class="flex items-start justify-between gap-2">
+              <div class="flex items-center gap-1.5">
+                <span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+                <h4 class="text-[11px] font-bold text-slate-800">Integritas Sumber &amp; Otoritas Kanal</h4>
+              </div>
+              <span class="text-[9px] px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-700 font-semibold shrink-0">✓
+                Valid &amp; Kredibel</span>
+            </div>
+            <p class="text-[10px] text-slate-500 leading-normal">
+              Sumber berita berasal dari institusi pers mapan (BBC News Indonesia) yang memiliki standar redaksi ketat,
+              verifikasi berlapis, dan kepatuhan tinggi terhadap kode etik jurnalistik.
+            </p>
+            <div class="flex items-center justify-between text-[9px] text-slate-400 pt-1 border-t border-slate-50">
+              <span class="">Tingkat: <strong class="text-slate-600 font-medium">Rendah</strong></span>
+              <span class="">Modul: <strong class="text-slate-600 font-medium">R8</strong></span>
+            </div>
+          </article>
+          <!-- Card 2 -->
+          <article class="bg-white p-3 rounded-xl border border-slate-100 shadow-2xs space-y-2">
+            <div class="flex items-start justify-between gap-2">
+              <div class="flex items-center gap-1.5">
+                <span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+                <h4 class="text-[11px] font-bold text-slate-800">Konsistensi Klaim Faktual</h4>
+              </div>
+              <span class="text-[9px] px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-700 font-semibold shrink-0">✓
+                Valid &amp; Kredibel</span>
+            </div>
+            <p class="text-[10px] text-slate-500 leading-normal">
+              Klaim terkait uji coba Makan Bergizi Gratis (MBG) dengan model prasmanan di SD Negeri Linggar 03 selaras
+              dengan data resmi yang dikeluarkan oleh Badan Gizi Nasional.
+            </p>
+            <div class="flex items-center justify-between text-[9px] text-slate-400 pt-1 border-t border-slate-50">
+              <span class="">Tingkat: <strong class="text-slate-600 font-medium">Rendah</strong></span>
+              <span class="">Modul: <strong class="text-slate-600 font-medium">R8</strong></span>
+            </div>
+          </article>
+          <!-- Card 3 -->
+          <article class="bg-white p-3 rounded-xl border border-slate-100 shadow-2xs space-y-2">
+            <div class="flex items-start justify-between gap-2">
+              <div class="flex items-center gap-1.5">
+                <span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+                <h4 class="text-[11px] font-bold text-slate-800">Pola Bahasa &amp; Retorika Emosional</h4>
+              </div>
+              <span class="text-[9px] px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-700 font-semibold shrink-0">✓
+                Valid &amp; Kredibel</span>
+            </div>
+            <p class="text-[10px] text-slate-500 leading-normal">
+              Gaya bahasa menggunakan standar jurnalistik objektif, informatif, dan netral, tanpa ditemukan penggunaan
+              kata-kata provokatif atau teknik fearmongering untuk memicu kepanikan pembaca.
+            </p>
+            <div class="flex items-center justify-between text-[9px] text-slate-400 pt-1 border-t border-slate-50">
+              <span class="">Tingkat: <strong class="text-slate-600 font-medium">Rendah</strong></span>
+              <span class="">Modul: <strong class="text-slate-600 font-medium">R7</strong></span>
+            </div>
+          </article>
+          <!-- Card 4 -->
+          <article class="bg-white p-3 rounded-xl border border-slate-100 shadow-2xs space-y-2">
+            <div class="flex items-start justify-between gap-2">
+              <div class="flex items-center gap-1.5">
+                <span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+                <h4 class="text-[11px] font-bold text-slate-800">Risiko Rekayasa Sosial &amp; Transaksional</h4>
+              </div>
+              <span class="text-[9px] px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-700 font-semibold shrink-0">✓
+                Valid &amp; Kredibel</span>
+            </div>
+            <p class="text-[10px] text-slate-500 leading-normal">
+              Artikel tidak mengarahkan pembaca pada tindakan transaksional berbahaya, tautan phishing, atau upaya
+              manipulasi psikologis yang merugikan publik secara finansial maupun sosial.
+            </p>
+            <div class="flex items-center justify-between text-[9px] text-slate-400 pt-1 border-t border-slate-50">
+              <span class="">Tingkat: <strong class="text-slate-600 font-medium">Rendah</strong></span>
+              <span class="">Modul: <strong class="text-slate-600 font-medium">R7</strong></span>
+            </div>
+          </article>
+          <!-- Card 5 -->
+          <article class="bg-white p-3 rounded-xl border border-slate-100 shadow-2xs space-y-2">
+            <div class="flex items-start justify-between gap-2">
+              <div class="flex items-center gap-1.5">
+                <span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+                <h4 class="text-[11px] font-bold text-slate-800">Integritas Otoritas Domain &amp; Reputasi Portal</h4>
+              </div>
+              <span class="text-[9px] px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-700 font-semibold shrink-0">✓
+                Valid &amp; Kredibel</span>
+            </div>
+            <p class="text-[10px] text-slate-500 leading-normal">
+              Domain tujuan memiliki reputasi global yang mapan dengan riwayat operasional bersih dari catatan
+              penyebaran disinformasi atau situs tiruan (spoofing).
+            </p>
+            <div class="flex items-center justify-between text-[9px] text-slate-400 pt-1 border-t border-slate-50">
+              <span class="">Tingkat: <strong class="text-slate-600 font-medium">Rendah</strong></span>
+              <span class="">Modul: <strong class="text-slate-600 font-medium">R8</strong></span>
+            </div>
+          </article>
+          <!-- Card 6 -->
+          <article class="bg-white p-3 rounded-xl border border-slate-100 shadow-2xs space-y-2">
+            <div class="flex items-start justify-between gap-2">
+              <div class="flex items-center gap-1.5">
+                <span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+                <h4 class="text-[11px] font-bold text-slate-800">Relevansi Judul &amp; Substansi Konten</h4>
+              </div>
+              <span class="text-[9px] px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-700 font-semibold shrink-0">✓
+                Valid &amp; Kredibel</span>
+            </div>
+            <p class="text-[10px] text-slate-500 leading-normal">
+              Judul artikel secara akurat merepresentasikan isi berita tanpa unsur clickbait yang menyesatkan,
+              memberikan kejelasan penuh kepada pembaca mengenai pokok bahasan.
+            </p>
+            <div class="flex items-center justify-between text-[9px] text-slate-400 pt-1 border-t border-slate-50">
+              <span class="">Tingkat: <strong class="text-slate-600 font-medium">Rendah</strong></span>
+              <span class="">Modul: <strong class="text-slate-600 font-medium">R8</strong></span>
+            </div>
+          </article>
+          <!-- Card 7 -->
+          <article class="bg-white p-3 rounded-xl border border-slate-100 shadow-2xs space-y-2">
+            <div class="flex items-start justify-between gap-2">
+              <div class="flex items-center gap-1.5">
+                <span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+                <h4 class="text-[11px] font-bold text-slate-800">Daur Ulang Konteks &amp; Reputasi Riwayat Domain</h4>
+              </div>
+              <span class="text-[9px] px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-700 font-semibold shrink-0">✓
+                Valid &amp; Kredibel</span>
+            </div>
+            <p class="text-[10px] text-slate-500 leading-normal">
+              Tidak ditemukan indikasi daur ulang narasi lama atau pencatutan konteks peristiwa masa lalu untuk
+              menciptakan disinformasi baru pada domain ini.
+            </p>
+            <div class="flex items-center justify-between text-[9px] text-slate-400 pt-1 border-t border-slate-50">
+              <span class="">Tingkat: <strong class="text-slate-600 font-medium">Rendah</strong></span>
+              <span class="">Modul: <strong class="text-slate-600 font-medium">R8</strong></span>
+            </div>
+          </article>
+          <!-- Card 8 -->
+          <article class="bg-white p-3 rounded-xl border border-slate-100 shadow-2xs space-y-2">
+            <div class="flex items-start justify-between gap-2">
+              <div class="flex items-center gap-1.5">
+                <span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+                <h4 class="text-[11px] font-bold text-slate-800">Keamanan Tautan &amp; Link Trust</h4>
+              </div>
+              <span class="text-[9px] px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-700 font-semibold shrink-0">✓
+                Valid &amp; Kredibel</span>
+            </div>
+            <p class="text-[10px] text-slate-500 leading-normal">
+              Tautan menggunakan protokol enkripsi HTTPS yang aman, bebas dari pelacak berbahaya, serta mengarahkan
+              langsung ke halaman resmi artikel tanpa pengalihan tersembunyi.
+            </p>
+            <div class="flex items-center justify-between text-[9px] text-slate-400 pt-1 border-t border-slate-50">
+              <span class="">Tingkat: <strong class="text-slate-600 font-medium">Rendah</strong></span>
+              <span class="">Modul: <strong class="text-slate-600 font-medium">R8</strong></span>
+            </div>
+          </article>
+        </div>
+      </section>
+      <!-- END: ForensicFindingsSection -->
+      <!-- BEGIN: BottomActionsSection -->
+      <section class="space-y-3 pt-2">
+        <div class="grid grid-cols-2 gap-2">
+          <!-- Action Button: Other Media -->
+          <button
+            class="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-white border border-slate-200 text-slate-700 font-semibold text-xs shadow-2xs hover:bg-slate-50"
+            type="button">
+            <svg class="w-3.5 h-3.5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+            </svg>
+            <span class="">Periksa Media Lain</span>
+          </button>
+          <!-- Action Button: Export Debunk Card -->
+          <button
+            class="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-blue-50 border border-blue-200 text-blue-700 font-semibold text-xs hover:bg-blue-100"
+            type="button">
+            <svg class="w-3.5 h-3.5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" stroke-linecap="round"
+                stroke-linejoin="round" stroke-width="2"></path>
+            </svg>
+            <span class="">Ekspor Kartu Debunk</span>
+          </button>
+        </div>
+        <!-- Feedback link -->
+        <div class="text-center">
+          <a class="inline-flex items-center gap-1 text-[11px] text-slate-500 hover:text-slate-800 font-medium"
+            href="#feedback">
+            <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"
+                stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+            </svg>
+            <span class="">Hasil ini keliru? Beri Masukan</span>
+          </a>
+        </div>
+      </section>
+      <!-- END: BottomActionsSection -->
+    </main>
+    <!-- BEGIN: Footer -->
+    <footer class="mt-auto px-4 py-6 border-t border-slate-200/80 bg-white space-y-3 text-center">
+      <!-- Footer Logo -->
+      <div class="flex items-center justify-center space-x-1.5">
+        <div class="w-5 h-5 rounded-md bg-blue-600 flex items-center justify-center text-white">
+          <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+              stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path>
+          </svg>
+        </div>
+        <span class="font-bold text-xs text-slate-900 tracking-tight">DeepCheck AI</span>
+      </div>
+      <!-- Project Metadata -->
+      <p class="text-[10px] text-slate-500 leading-relaxed max-w-[320px] mx-auto">
+        Proyek Mata Kuliah PTIK • Program Studi Informatika • Dikembangkan dengan Gemini API
+      </p>
+      <!-- Ethical Notice Box -->
+
+    </footer>
+    <!-- END: Footer -->
+  </div>
+
+
+</body>
+
+</html>

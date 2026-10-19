@@ -1,0 +1,608 @@
+<!DOCTYPE html><html lang="id" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>DeepCheck AI - Verifikasi Media &amp; Deteksi Deepfake Berbasis Bukti Digital</title>
+<!-- Google Fonts: Inter & Plus Jakarta Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@500;600;700;800&amp;display=swap" rel="stylesheet">
+<!-- Tailwind CSS CDN with plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration -->
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['"Plus Jakarta Sans"', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#eff6ff',
+              100: '#dbeafe',
+              200: '#bfdbfe',
+              300: '#93c5fd',
+              400: '#60a5fa',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8',
+              800: '#1e40af',
+              900: '#1e3a8a',
+            },
+            forensic: {
+              emerald: '#059669',
+              teal: '#0d9488',
+              cyan: '#0284c7',
+              navy: '#0f172a',
+            }
+          },
+          boxShadow: {
+            subtle: '0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05)',
+            card: '0 4px 6px -1px rgba(0, 0, 0, 0.04), 0 2px 4px -2px rgba(0, 0, 0, 0.03)',
+            elevated: '0 20px 25px -5px rgba(15, 23, 42, 0.06), 0 8px 10px -6px rgba(15, 23, 42, 0.04)',
+            glow: '0 0 25px -5px rgba(37, 99, 235, 0.25)',
+          }
+        }
+      }
+    }
+  </script>
+<!-- BEGIN: Custom Micro-Styles -->
+<style data-purpose="custom-enhancements">
+    /* Subtle radial background decorative glow */
+    .bg-grid-pattern {
+      background-size: 32px 32px;
+      background-image: 
+        linear-gradient(to right, rgba(226, 232, 240, 0.45) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(226, 232, 240, 0.45) 1px, transparent 1px);
+    }
+    .custom-conic-gauge {
+      background: conic-gradient(#059669 0deg 352.8deg, #e2e8f0 352.8deg 360deg);
+    }
+    /* Smooth transition presets */
+    .btn-bounce {
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .btn-bounce:hover {
+      transform: translateY(-1px);
+    }
+    .btn-bounce:active {
+      transform: translateY(0);
+    }
+  </style>
+<!-- END: Custom Micro-Styles -->
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased font-sans min-h-screen relative flex flex-col selection:bg-brand-100 selection:text-brand-800">
+<!-- Background decorative light gradients -->
+<div class="absolute inset-0 bg-grid-pattern pointer-events-none opacity-60 z-0 h-[650px]"></div>
+<div class="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[400px] bg-gradient-to-b from-blue-100/70 via-indigo-50/40 to-transparent blur-3xl pointer-events-none z-0"></div>
+<!-- BEGIN: MainHeader -->
+<header class="sticky top-0 z-50 backdrop-blur-md bg-white/80 border-b border-slate-200/80 transition-all duration-200">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex items-center justify-between h-16 sm:h-20">
+<!-- DeepCheck AI Brand & Academic Badge -->
+<div class="flex items-center space-x-3 sm:space-x-4">
+<div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-700 via-brand-600 to-indigo-500 p-0.5 shadow-md shadow-brand-500/20 flex items-center justify-center text-white">
+<!-- Shield Check Icon -->
+<svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+<path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<div>
+<div class="flex items-center space-x-2">
+<span class="font-display font-extrabold text-xl text-slate-900 tracking-tight">DeepCheck <span class="text-brand-600">AI</span></span>
+
+</div>
+
+</div>
+</div>
+<!-- Center Status Pill (Desktop only) -->
+
+<!-- Right Quick Actions -->
+<div class="flex items-center space-x-3">
+<button class="inline-flex items-center space-x-2 px-3.5 py-2 text-xs sm:text-sm font-semibold rounded-lg bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 hover:border-slate-300 shadow-sm transition-colors" type="button">
+<!-- Book/History Icon -->
+<svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<span class="">Riwayat Verifikasi</span>
+<span class="ml-1 px-1.5 py-0.2 rounded-full text-[11px] bg-slate-100 text-slate-700 font-bold border border-slate-200">3</span>
+</button>
+
+</div>
+</div>
+</div>
+</header>
+<!-- END: MainHeader -->
+<!-- BEGIN: MainContent -->
+<main class="flex-grow z-10">
+<!-- BEGIN: HeroSection -->
+<section class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 sm:pt-14 pb-8 text-center" data-purpose="hero-section">
+<!-- Accuracy & Calibration Pill -->
+
+<!-- Hero Heading -->
+<h1 class="font-display font-extrabold text-3xl sm:text-5xl lg:text-6xl text-slate-900 tracking-tight leading-tight max-w-4xl mx-auto">
+        Verifikasi Media &amp; Cek Deepfake <br class="hidden sm:block">
+<span class="bg-gradient-to-r from-brand-600 via-indigo-600 to-blue-700 bg-clip-text text-transparent">Dalam Hitungan Detik</span>
+</h1>
+<!-- Hero Subtitle -->
+<p class="mt-4 sm:mt-5 text-sm sm:text-base lg:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
+        Periksa tautan berita, poster gambar, rekaman video, atau suara sebelum Anda membagikannya. DeepCheck AI menganalisis artefak visual, pola bahasa hoaks, dan rujukan sumber resmi secara terpadu.
+      </p>
+<!-- BEGIN: InputConsoleCard -->
+<div class="mt-8 sm:mt-10 bg-white rounded-2xl border border-slate-200/90 shadow-elevated p-4 sm:p-7 text-left max-w-3xl mx-auto backdrop-blur-sm" data-purpose="input-card">
+<!-- Segmented Mode Tabs -->
+<div class="flex items-center p-1 bg-slate-100 rounded-xl max-w-md mx-auto mb-6 border border-slate-200/60" role="tablist">
+<button class="flex-1 py-2 text-xs sm:text-sm font-semibold rounded-lg bg-white text-brand-700 shadow-sm flex items-center justify-center space-x-1.5 transition-all" type="button">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span class="">Tautan / URL</span>
+</button>
+<button class="flex-1 py-2 text-xs sm:text-sm font-medium text-slate-600 hover:text-slate-900 flex items-center justify-center space-x-1.5 transition-all" type="button">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span class="">Unggah Media</span>
+</button>
+<button class="flex-1 py-2 text-xs sm:text-sm font-medium text-slate-600 hover:text-slate-900 flex items-center justify-center space-x-1.5 transition-all" type="button">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span class="">Pesan / Teks</span>
+</button>
+</div>
+<form class="space-y-4" onsubmit="event.preventDefault();">
+<!-- Main URL Input -->
+<div>
+<div class="flex items-center justify-between mb-2">
+<label class="text-xs sm:text-sm font-semibold text-slate-800" for="verification-url">
+                Tempel URL Berita, Video TikTok, Instagram Reel, atau YouTube
+              </label>
+<!-- Platform Quick badges -->
+<div class="hidden sm:flex items-center space-x-1.5 text-[11px] text-slate-500 font-medium">
+<span class="px-2 py-0.5 rounded bg-slate-100 text-slate-600">TikTok</span>
+<span class="px-2 py-0.5 rounded bg-slate-100 text-slate-600">Instagram</span>
+<span class="px-2 py-0.5 rounded bg-slate-100 text-slate-600">YouTube</span>
+<span class="px-2 py-0.5 rounded bg-slate-100 text-slate-600">Media Pers</span>
+</div>
+</div>
+<div class="relative rounded-xl shadow-sm">
+<div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<path d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</div>
+<input class="block w-full pl-10 pr-24 py-3 sm:py-3.5 text-xs sm:text-sm border-slate-300 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-brand-500 bg-white text-slate-900 font-mono tracking-tight" id="verification-url" placeholder="https://..." type="text" value="https://www.bbc.com/indonesia/articles/c6jrw11jp3rdo">
+<button class="absolute inset-y-1.5 right-1.5 px-3 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition-colors flex items-center" type="button">
+                Tempel
+              </button>
+</div>
+</div>
+<!-- Context Input Field -->
+<div>
+<label class="block text-xs font-medium text-slate-500 mb-1.5" for="optional-context">
+              Konteks atau Narasi Tambahan dari Pengunggah (Opsional):
+            </label>
+<input class="block w-full px-3.5 py-2.5 text-xs sm:text-sm border-slate-200 rounded-xl text-slate-500 placeholder-slate-400 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-brand-500 focus:border-brand-500" id="optional-context" type="text" value="Contoh: 'Beredar video pejabat ini bagi-bagi bansos tapi gerak bibirnya kaku...'">
+</div>
+<!-- Submit CTA Button -->
+<div class="pt-2 flex flex-col sm:flex-row sm:items-center sm:justify-end gap-3">
+<button class="w-full sm:w-auto inline-flex items-center justify-center space-x-2 px-6 py-3.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-semibold text-sm shadow-md shadow-brand-600/30 btn-bounce focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2" type="submit">
+<span class="">Periksa Keaslian Sekarang</span>
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</div>
+</form>
+</div>
+<!-- END: InputConsoleCard -->
+<!-- BEGIN: HumanOversightBanner -->
+<div class="mt-6 max-w-3xl mx-auto bg-amber-50/90 border border-amber-200/80 rounded-xl p-3.5 sm:p-4 text-left flex items-start space-x-3 text-amber-900 shadow-sm" data-purpose="human-oversight-card">
+<div class="flex-shrink-0 mt-0.5 text-amber-600">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</div>
+<div class="text-xs sm:text-[13px] leading-relaxed">
+<span class="font-bold text-amber-950">Prinsip Human Oversight: Skor adalah Bantuan Berpikir Kritis, Bukan Vonis Mutlak</span>
+<p class="text-amber-800/90 mt-0.5">
+            Skor ini adalah indikator probabilistik berbasis kecerdasan buatan untuk membantu berpikir kritis, bukan merupakan vonis kebenaran mutlak. Keputusan akhir tetap berada di tangan Anda sebagai pengguna yang bijak.
+          </p>
+</div>
+</div>
+<!-- END: HumanOversightBanner -->
+</section>
+<!-- END: HeroSection -->
+<!-- BEGIN: VerificationResultsSection -->
+<section class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 space-y-6" data-purpose="results-section">
+<!-- Primary Score Card -->
+<div class="bg-white rounded-2xl border border-slate-200/90 shadow-elevated overflow-hidden p-6 sm:p-8">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+<!-- Gauge Meter -->
+<div class="md:col-span-4 flex flex-col items-center justify-center border-b md:border-b-0 md:border-r border-slate-100 pb-6 md:pb-0 md:pr-6">
+<div class="relative w-36 h-36 rounded-full custom-conic-gauge p-3 flex items-center justify-center shadow-inner">
+<div class="w-full h-full bg-white rounded-full flex flex-col items-center justify-center shadow-sm">
+<span class="font-display text-4xl font-extrabold text-emerald-600 tracking-tight">98%</span>
+<span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mt-0.5">Skor Keaslian</span>
+</div>
+</div>
+<div class="mt-3.5 inline-flex items-center space-x-1.5 px-3 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-full text-xs font-semibold">
+<span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+<span class="">Kategori: Risiko Sangat Rendah</span>
+</div>
+</div>
+<!-- Summary Verdict & Meta -->
+<div class="md:col-span-8 flex flex-col justify-between">
+<div>
+<div class="flex items-center space-x-2 text-xs font-semibold text-emerald-700 bg-emerald-50/80 px-2.5 py-1 rounded inline-flex mb-2">
+<svg class="w-3.5 h-3.5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span class="">Terverifikasi Sah Berita Faktual</span>
+</div>
+<h2 class="font-display font-bold text-xl sm:text-2xl text-slate-900 leading-snug">
+                Konten berita terverifikasi sah berasal dari media pers kredibel dengan narasi faktual yang konsisten dan tingkat kredibilitas sangat tinggi.
+              </h2>
+<p class="mt-2 text-xs sm:text-sm text-slate-500 font-normal">
+                Risiko Manipulasi Rendah (Cenderung Asli). Tidak terdeteksi manipulasi video deepfake, audio cloning, maupun distorsi konteks jurnalistik.
+              </p>
+</div>
+<!-- Methods and Export Bar -->
+<div class="mt-6 pt-5 border-t border-slate-100 flex flex-wrap items-center justify-between gap-4">
+
+<div class="flex items-center space-x-2 text-xs">
+<span class="text-slate-400">Waktu Analisis: <strong class="text-slate-700 font-mono font-medium">4.01 detik</strong></span>
+<button class="inline-flex items-center space-x-1 px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium transition-colors" type="button">
+<svg class="w-3.5 h-3.5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span class="">Bagikan</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- BEGIN: 4 Core Pillars Indicators -->
+<div class="mt-8 pt-6 border-t border-slate-100" data-purpose="four-pillars">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-xs sm:text-sm font-bold text-slate-900 tracking-tight uppercase">Rincian Indikator Keaslian</h3>
+
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+<!-- Pillar 1 -->
+<div class="p-3.5 rounded-xl border border-slate-200/80 bg-slate-50/50 hover:bg-white hover:shadow-card transition-all">
+<div class="flex items-center justify-between mb-2">
+<span class="w-7 h-7 rounded-lg bg-blue-100 text-brand-600 flex items-center justify-center">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</span>
+<span class="text-sm font-mono font-bold text-slate-800">85%</span>
+</div>
+<h4 class="text-xs font-bold text-slate-800 leading-tight">Integritas Visual &amp; Audio</h4>
+<p class="text-[11px] text-slate-500 mt-1">Artefak AI, piksel &amp; kloning suara</p>
+<div class="mt-2.5 flex items-center justify-between">
+<div class="w-16 bg-slate-200 rounded-full h-1.5 overflow-hidden">
+<div class="bg-emerald-500 h-1.5 rounded-full" style="width: 85%"></div>
+</div>
+<span class="text-[10px] font-semibold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded">Terverifikasi</span>
+</div>
+</div>
+<!-- Pillar 2 -->
+<div class="p-3.5 rounded-xl border border-slate-200/80 bg-slate-50/50 hover:bg-white hover:shadow-card transition-all">
+<div class="flex items-center justify-between mb-2">
+<span class="w-7 h-7 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</span>
+<span class="text-sm font-mono font-bold text-slate-800">93%</span>
+</div>
+<h4 class="text-xs font-bold text-slate-800 leading-tight">Klaim Faktual &amp; Logika</h4>
+<p class="text-[11px] text-slate-500 mt-1">Konsistensi narasi peristiwa</p>
+<div class="mt-2.5 flex items-center justify-between">
+<div class="w-16 bg-slate-200 rounded-full h-1.5 overflow-hidden">
+<div class="bg-emerald-500 h-1.5 rounded-full" style="width: 93%"></div>
+</div>
+<span class="text-[10px] font-semibold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded">Terverifikasi</span>
+</div>
+</div>
+<!-- Pillar 3 -->
+<div class="p-3.5 rounded-xl border border-slate-200/80 bg-slate-50/50 hover:bg-white hover:shadow-card transition-all">
+<div class="flex items-center justify-between mb-2">
+<span class="w-7 h-7 rounded-lg bg-teal-100 text-teal-600 flex items-center justify-center">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</span>
+<span class="text-sm font-mono font-bold text-slate-800">85%</span>
+</div>
+<h4 class="text-xs font-bold text-slate-800 leading-tight">Rujukan Sumber Kredibel</h4>
+<p class="text-[11px] text-slate-500 mt-1">Korelasi media pers &amp; portal resmi</p>
+<div class="mt-2.5 flex items-center justify-between">
+<div class="w-16 bg-slate-200 rounded-full h-1.5 overflow-hidden">
+<div class="bg-emerald-500 h-1.5 rounded-full" style="width: 85%"></div>
+</div>
+<span class="text-[10px] font-semibold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded">Terverifikasi</span>
+</div>
+</div>
+<!-- Pillar 4 -->
+<div class="p-3.5 rounded-xl border border-slate-200/80 bg-slate-50/50 hover:bg-white hover:shadow-card transition-all">
+<div class="flex items-center justify-between mb-2">
+<span class="w-7 h-7 rounded-lg bg-sky-100 text-sky-600 flex items-center justify-center">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</span>
+<span class="text-sm font-mono font-bold text-slate-800">100%</span>
+</div>
+<h4 class="text-xs font-bold text-slate-800 leading-tight">Pola Bahasa &amp; Retorika</h4>
+<p class="text-[11px] text-slate-500 mt-1">Indikasi sentimen provokasi: Nihil</p>
+<div class="mt-2.5 flex items-center justify-between">
+<div class="w-16 bg-slate-200 rounded-full h-1.5 overflow-hidden">
+<div class="bg-emerald-500 h-1.5 rounded-full" style="width: 100%"></div>
+</div>
+<span class="text-[10px] font-semibold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded">Terverifikasi</span>
+</div>
+</div>
+</div>
+</div>
+<!-- END: 4 Core Pillars Indicators -->
+</div>
+<!-- BEGIN: DeepForensicNarrative -->
+<div class="bg-white rounded-2xl border border-slate-200/90 shadow-elevated p-6 sm:p-8" data-purpose="narrative-card">
+<div class="flex items-center justify-between border-b border-slate-100 pb-4 mb-5">
+<div class="flex items-center space-x-2.5">
+<div class="p-2 bg-blue-50 text-brand-600 rounded-lg">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+<div>
+<h3 class="text-base sm:text-lg font-bold text-slate-900 font-display">Alasan &amp; Penjelasan Hasil Analisis</h3>
+<p class="text-xs text-slate-500">Sintesis argumentatif forensik digital multi-vektor</p>
+</div>
+</div>
+
+</div>
+<div class="prose prose-slate max-w-none text-slate-700 text-xs sm:text-sm leading-relaxed space-y-4">
+<p class="">
+            Berdasarkan hasil analisis sinyal forensik lintas router, tautan artikel yang dievaluasi terbukti berasal dari kanal media berita terkemuka dan diakui secara nasional maupun internasional <strong>(BBC News Indonesia)</strong>. Seluruh klaim yang dipaparkan, termasuk uji coba program Makan Bergizi Gratis (MBG) dengan model prasmanan, didukung oleh data primer dan sekunder yang konsisten tanpa indikasi manipulasi informasi atau rekayasa narasi.
+          </p>
+<p class="">
+            Penelusuran rantai bukti menunjukkan keselarasan penuh antara judul artikel, isi pemberitaan, serta laporan resmi dari Badan Gizi Nasional terkait pelaksanaan uji coba dapur SPPG di Kabupaten Bandung. Tidak ditemukan adanya anomali pada struktur teks, pola manipulasi NLP, maupun indikasi penyebaran disinformasi, yang mengonfirmasi bahwa informasi ini disajikan secara objektif, berimbang, dan dapat dipertanggungjawabkan.
+          </p>
+<p class="">
+            Evaluasi terhadap aspek retorika dan bahasa menunjukkan gaya penulisan jurnalistik standar tanpa adanya muatan provokasi emosional, sensasionalisme berlebihan, ataupun upaya penggiringan opini yang berbahaya. Risiko dampak dari penyebaran informasi ini tergolong sangat aman dan konstruktif bagi pembaca, sehingga masyarakat dapat menjadikannya sebagai referensi terpercaya tanpa kekhawatiran adanya distorsi fakta.
+          </p>
+</div>
+</div>
+<!-- END: DeepForensicNarrative -->
+<!-- BEGIN: ForensicDimensionsGrid -->
+<div class="bg-white rounded-2xl border border-slate-200/90 shadow-elevated p-6 sm:p-8" data-purpose="forensic-dimension-breakdown">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4 mb-6">
+<div>
+<h3 class="text-base sm:text-lg font-bold text-slate-900 font-display">Indikator Temuan Pemeriksaan Forensik</h3>
+<p class="text-xs text-slate-500">Evaluasi mendalam lintas 8 dimensi akurasi, reputasi portal, dan integritas data</p>
+</div>
+<!-- Filter Tabs -->
+<div class="flex items-center space-x-1.5 text-xs">
+<span class="px-2.5 py-1 rounded-lg bg-slate-900 text-white font-semibold shadow-sm">Semua (8)</span>
+<span class="px-2.5 py-1 rounded-lg bg-slate-100 text-emerald-700 font-medium">Valid (8)</span>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<!-- Item 1 -->
+<div class="p-4 rounded-xl border border-slate-200 bg-white hover:border-brand-200 transition-colors">
+<div class="flex items-start justify-between">
+<div class="flex items-center space-x-2">
+<span class="text-brand-600">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</span>
+<h4 class="text-xs sm:text-sm font-bold text-slate-900">Integritas Sumber &amp; Otoritas Kanal</h4>
+</div>
+<span class="inline-flex items-center text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200/60">
+                ✓ Valid &amp; Kredibel
+              </span>
+</div>
+<p class="mt-2.5 text-xs text-slate-600 leading-relaxed">
+              Sumber berita berasal dari institusi pers mapan (BBC News Indonesia) yang memiliki standar redaksi ketat, verifikasi berlapis, dan kepatuhan tinggi terhadap kode etik jurnalistik.
+            </p>
+<div class="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-400">
+<span class="">Tingkat: <strong class="text-emerald-700 font-medium">Rendah Resiko</strong></span>
+<span class="">Modul: R8</span>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="p-4 rounded-xl border border-slate-200 bg-white hover:border-brand-200 transition-colors">
+<div class="flex items-start justify-between">
+<div class="flex items-center space-x-2">
+<span class="text-brand-600">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</span>
+<h4 class="text-xs sm:text-sm font-bold text-slate-900">Konsistensi Klaim Faktual</h4>
+</div>
+<span class="inline-flex items-center text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200/60">
+                ✓ Valid &amp; Kredibel
+              </span>
+</div>
+<p class="mt-2.5 text-xs text-slate-600 leading-relaxed">
+              Klaim terkait uji coba Makan Bergizi Gratis (MBG) dengan model prasmanan di SD Negeri Linggar 03 selaras dengan data resmi yang dikeluarkan oleh Badan Gizi Nasional.
+            </p>
+<div class="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-400">
+<span class="">Tingkat: <strong class="text-emerald-700 font-medium">Rendah Resiko</strong></span>
+<span class="">Modul: R8</span>
+</div>
+</div>
+<!-- Item 3 -->
+<div class="p-4 rounded-xl border border-slate-200 bg-white hover:border-brand-200 transition-colors">
+<div class="flex items-start justify-between">
+<div class="flex items-center space-x-2">
+<span class="text-brand-600">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</span>
+<h4 class="text-xs sm:text-sm font-bold text-slate-900">Pola Bahasa &amp; Retorika Emosional</h4>
+</div>
+<span class="inline-flex items-center text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200/60">
+                ✓ Valid &amp; Kredibel
+              </span>
+</div>
+<p class="mt-2.5 text-xs text-slate-600 leading-relaxed">
+              Gaya bahasa menggunakan standar jurnalistik objektif, informatif, dan netral, tanpa ditemukan penggunaan kata-kata provokatif atau teknik fearmongering untuk memicu kepanikan pembaca.
+            </p>
+<div class="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-400">
+<span class="">Tingkat: <strong class="text-emerald-700 font-medium">Rendah Resiko</strong></span>
+<span class="">Modul: R7</span>
+</div>
+</div>
+<!-- Item 4 -->
+<div class="p-4 rounded-xl border border-slate-200 bg-white hover:border-brand-200 transition-colors">
+<div class="flex items-start justify-between">
+<div class="flex items-center space-x-2">
+<span class="text-brand-600">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</span>
+<h4 class="text-xs sm:text-sm font-bold text-slate-900">Risiko Rekayasa Sosial &amp; Transaksional</h4>
+</div>
+<span class="inline-flex items-center text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200/60">
+                ✓ Valid &amp; Kredibel
+              </span>
+</div>
+<p class="mt-2.5 text-xs text-slate-600 leading-relaxed">
+              Artikel tidak mengarahkan pembaca pada tindakan transaksional berbahaya, tautan phishing, atau upaya manipulasi psikologis yang merugikan publik secara finansial maupun sosial.
+            </p>
+<div class="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-400">
+<span class="">Tingkat: <strong class="text-emerald-700 font-medium">Rendah Resiko</strong></span>
+<span class="">Modul: R7</span>
+</div>
+</div>
+<!-- Item 5 -->
+<div class="p-4 rounded-xl border border-slate-200 bg-white hover:border-brand-200 transition-colors">
+<div class="flex items-start justify-between">
+<div class="flex items-center space-x-2">
+<span class="text-brand-600">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</span>
+<h4 class="text-xs sm:text-sm font-bold text-slate-900">Integritas Otoritas Domain &amp; Reputasi</h4>
+</div>
+<span class="inline-flex items-center text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200/60">
+                ✓ Valid &amp; Kredibel
+              </span>
+</div>
+<p class="mt-2.5 text-xs text-slate-600 leading-relaxed">
+              Domain tujuan memiliki reputasi global yang mapan dengan riwayat operasional bersih dari catatan penyebaran disinformasi atau situs tiruan (spoofing).
+            </p>
+<div class="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-400">
+<span class="">Tingkat: <strong class="text-emerald-700 font-medium">Rendah Resiko</strong></span>
+<span class="">Modul: R8</span>
+</div>
+</div>
+<!-- Item 6 -->
+<div class="p-4 rounded-xl border border-slate-200 bg-white hover:border-brand-200 transition-colors">
+<div class="flex items-start justify-between">
+<div class="flex items-center space-x-2">
+<span class="text-brand-600">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</span>
+<h4 class="text-xs sm:text-sm font-bold text-slate-900">Relevansi Judul &amp; Substansi Konten</h4>
+</div>
+<span class="inline-flex items-center text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200/60">
+                ✓ Valid &amp; Kredibel
+              </span>
+</div>
+<p class="mt-2.5 text-xs text-slate-600 leading-relaxed">
+              Judul artikel secara akurat merepresentasikan isi berita tanpa unsur clickbait yang menyesatkan, memberikan kejelasan penuh kepada pembaca mengenai pokok bahasan.
+            </p>
+<div class="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-400">
+<span class="">Tingkat: <strong class="text-emerald-700 font-medium">Rendah Resiko</strong></span>
+<span class="">Modul: R8</span>
+</div>
+</div>
+<!-- Item 7 -->
+<div class="p-4 rounded-xl border border-slate-200 bg-white hover:border-brand-200 transition-colors">
+<div class="flex items-start justify-between">
+<div class="flex items-center space-x-2">
+<span class="text-brand-600">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</span>
+<h4 class="text-xs sm:text-sm font-bold text-slate-900">Daur Ulang Konteks &amp; Riwayat Domain</h4>
+</div>
+<span class="inline-flex items-center text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200/60">
+                ✓ Valid &amp; Kredibel
+              </span>
+</div>
+<p class="mt-2.5 text-xs text-slate-600 leading-relaxed">
+              Tidak ditemukan indikasi daur ulang narasi lama atau pencatutan konteks peristiwa masa lalu untuk menciptakan disinformasi baru pada domain ini.
+            </p>
+<div class="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-400">
+<span class="">Tingkat: <strong class="text-emerald-700 font-medium">Rendah Resiko</strong></span>
+<span class="">Modul: R8</span>
+</div>
+</div>
+<!-- Item 8 -->
+<div class="p-4 rounded-xl border border-slate-200 bg-white hover:border-brand-200 transition-colors">
+<div class="flex items-start justify-between">
+<div class="flex items-center space-x-2">
+<span class="text-brand-600">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</span>
+<h4 class="text-xs sm:text-sm font-bold text-slate-900">Keamanan Tautan &amp; Link Trust</h4>
+</div>
+<span class="inline-flex items-center text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200/60">
+                ✓ Valid &amp; Kredibel
+              </span>
+</div>
+<p class="mt-2.5 text-xs text-slate-600 leading-relaxed">
+              Tautan menggunakan protokol enkripsi HTTPS yang aman, bebas dari pelacak berbahaya, serta mengarahkan langsung ke halaman resmi artikel tanpa pengalihan tersembunyi.
+            </p>
+<div class="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-400">
+<span class="">Tingkat: <strong class="text-emerald-700 font-medium">Rendah Resiko</strong></span>
+<span class="">Modul: R8</span>
+</div>
+</div>
+</div>
+</div>
+<!-- END: ForensicDimensionsGrid -->
+<!-- BEGIN: BottomActionsToolbar -->
+<div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4" data-purpose="bottom-actions">
+<div class="flex items-center space-x-3 w-full sm:w-auto">
+<button class="flex-1 sm:flex-none inline-flex items-center justify-center space-x-2 px-5 py-2.5 rounded-xl bg-white border border-slate-200 hover:border-slate-300 text-slate-700 text-xs sm:text-sm font-semibold shadow-sm hover:bg-slate-50 transition-colors" type="button">
+<svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span class="">Periksa Media Lainnya</span>
+</button>
+<button class="flex-1 sm:flex-none inline-flex items-center justify-center space-x-2 px-5 py-2.5 rounded-xl bg-brand-50 border border-brand-200 text-brand-700 hover:bg-brand-100 text-xs sm:text-sm font-semibold transition-colors" type="button">
+<svg class="w-4 h-4 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span class="">Ekspor Kartu Debunk</span>
+</button>
+</div>
+<button class="inline-flex items-center space-x-1.5 text-xs text-slate-500 hover:text-slate-800 transition-colors" type="button">
+<svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span class="">Hasil ini keliru? Laporkan Masukan Forensik</span>
+</button>
+</div>
+<!-- END: BottomActionsToolbar -->
+</section>
+<!-- END: VerificationResultsSection -->
+</main>
+<!-- END: MainContent -->
+<!-- BEGIN: MainFooter -->
+<footer class="bg-white border-t border-slate-200 mt-12 py-8 relative z-10" data-purpose="site-footer">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
+<!-- Academic Info -->
+<div class="flex items-center space-x-3">
+<div class="w-8 h-8 rounded-lg bg-slate-100 border border-slate-200 flex items-center justify-center text-brand-600 font-bold text-xs">
+            DC
+          </div>
+<div>
+<p class="text-xs font-semibold text-slate-800">DeepCheck AI — Verifikasi Multi-Modal</p>
+<p class="text-[11px] text-slate-500">Proyek Mata Kuliah PTIK • Program Studi Informatika</p>
+</div>
+</div>
+<!-- Privacy & Disclaimer Note -->
+
+</div>
+</div>
+</footer>
+<!-- END: MainFooter -->
+<!-- BEGIN: InteractiveScripts -->
+<script data-purpose="simple-interactions">
+    // Optional micro-interaction handler for tab switching
+    document.addEventListener('DOMContentLoaded', () => {
+      const tabs = document.querySelectorAll('[role="tablist"] button');
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          tabs.forEach(t => {
+            t.classList.remove('bg-white', 'text-brand-700', 'shadow-sm');
+            t.classList.add('text-slate-600');
+          });
+          tab.classList.add('bg-white', 'text-brand-700', 'shadow-sm');
+          tab.classList.remove('text-slate-600');
+        });
+      });
+    });
+  </script>
+<!-- END: InteractiveScripts -->
+
+
+</body></html>

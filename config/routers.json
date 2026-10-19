@@ -1,0 +1,74 @@
+{
+  "routers": {
+    "R1": {
+      "name": "Intake & Klasifikasi",
+      "model": "gemini-flash-lite-latest",
+      "promptVersion": "1.0",
+      "timeoutMs": 15000,
+      "maxRetries": 1
+    },
+    "R2": {
+      "name": "Pra-pemrosesan",
+      "model": null,
+      "promptVersion": null,
+      "timeoutMs": 20000,
+      "maxRetries": 1
+    },
+    "R3": {
+      "name": "OCR & Ekstraksi Klaim",
+      "model": "gemini-flash-lite-latest",
+      "promptVersion": "1.0",
+      "timeoutMs": 15000,
+      "maxRetries": 1
+    },
+    "R4": {
+      "name": "Artefak Gambar",
+      "model": "gemini-flash-lite-latest",
+      "promptVersion": "1.0",
+      "timeoutMs": 15000,
+      "maxRetries": 1
+    },
+    "R5": {
+      "name": "Artefak Video",
+      "model": "gemini-flash-lite-latest",
+      "promptVersion": "1.0",
+      "timeoutMs": 20000,
+      "maxRetries": 1
+    },
+    "R6": {
+      "name": "Audio Sintetis",
+      "model": "gemini-flash-lite-latest",
+      "promptVersion": "1.0",
+      "timeoutMs": 15000,
+      "maxRetries": 1
+    },
+    "R7": {
+      "name": "Analisis Teks NLP",
+      "model": "gemini-flash-lite-latest",
+      "promptVersion": "1.0",
+      "timeoutMs": 15000,
+      "maxRetries": 1
+    },
+    "R8": {
+      "name": "Pemeriksaan Sumber Resmi",
+      "model": "gemini-flash-lite-latest",
+      "promptVersion": "1.0",
+      "timeoutMs": 20000,
+      "maxRetries": 1
+    },
+    "R9": {
+      "name": "Penggabung Skor & Edukasi",
+      "model": "gemini-flash-lite-latest",
+      "promptVersion": "1.0",
+      "timeoutMs": 20000,
+      "maxRetries": 1
+    }
+  },
+  "globalSettings": {
+    "maxRetries": 1,
+    "maxFileSizeMB": 20,
+    "supportedImageTypes": ["image/jpeg", "image/png", "image/webp", "image/gif"],
+    "supportedVideoTypes": ["video/mp4", "video/webm"],
+    "supportedAudioTypes": ["audio/mpeg", "audio/wav", "audio/ogg"]
+  }
+}
