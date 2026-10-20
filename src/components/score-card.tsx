@@ -124,12 +124,12 @@ export function ScoreCard({
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="w-full space-y-5 sm:space-y-6">
       {/* Celebration Confetti on authentic score */}
       <ConfettiBurst trigger={score >= 80} />
 
       {/* BEGIN: Primary Score & Telemetry Card */}
-      <section className="bg-white rounded-2xl border border-slate-200/90 shadow-elevated p-5 sm:p-7 space-y-6">
+      <section className="w-full bg-white rounded-2xl border border-slate-200/90 shadow-elevated p-4 sm:p-7 space-y-5 sm:space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
           {/* Gauge Meter */}
           <div className="md:col-span-4 flex flex-col items-center justify-center border-b md:border-b-0 md:border-r border-slate-100 pb-5 md:pb-0 md:pr-6">

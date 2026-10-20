@@ -46,7 +46,7 @@ export default function RootLayout({
     <html
       lang="id"
       suppressHydrationWarning
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased light`}
+      className={`${geistSans.variable} ${geistMono.variable} h-full w-full max-w-full overflow-x-hidden antialiased light`}
       style={{ colorScheme: "light" }}
     >
       <head>
@@ -76,7 +76,7 @@ export default function RootLayout({
       </head>
       <body
         suppressHydrationWarning
-        className="min-h-full flex flex-col font-sans text-slate-900 bg-slate-50 antialiased selection:bg-blue-600 selection:text-white pb-[env(safe-area-inset-bottom)]"
+        className="min-h-full w-full max-w-full overflow-x-hidden flex flex-col font-sans text-slate-900 bg-slate-50 antialiased selection:bg-blue-600 selection:text-white pb-[env(safe-area-inset-bottom)]"
       >
         <SuppressDevtools />
         {children}

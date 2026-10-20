@@ -12,9 +12,9 @@ export function Header({
   historyCount?: number;
 }) {
   return (
-    <header className="sticky top-0 z-50 backdrop-blur-md bg-white/85 border-b border-slate-200/80 transition-all duration-200">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-15 sm:h-18">
+    <header className="sticky top-0 z-50 backdrop-blur-md bg-white/85 border-b border-slate-200/80 transition-all duration-200 w-full">
+      <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 w-full">
+        <div className="flex items-center justify-between h-14 sm:h-18">
           {/* DeepCheck Brand & Info */}
           <div className="flex items-center space-x-2.5 sm:space-x-3.5">
             <div className="relative w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-white border border-blue-100 shadow-sm shadow-blue-500/10 flex items-center justify-center p-0.5 shrink-0 overflow-hidden">

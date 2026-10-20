@@ -176,10 +176,10 @@ export default function Home() {
   };
 
   return (
-    <div suppressHydrationWarning className="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-blue-100 selection:text-blue-800 min-h-screen relative flex flex-col">
+    <div suppressHydrationWarning className="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-blue-100 selection:text-blue-800 min-h-screen relative flex flex-col w-full max-w-full overflow-x-hidden">
       {/* Background decorative light patterns from Stitch */}
-      <div className="absolute inset-0 bg-grid-pattern pointer-events-none opacity-60 z-0 h-[650px]" />
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[400px] bg-gradient-to-b from-blue-100/70 via-indigo-50/40 to-transparent blur-3xl pointer-events-none z-0" />
+      <div className="absolute inset-0 bg-grid-pattern pointer-events-none opacity-60 z-0 h-[650px] w-full overflow-hidden" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-[900px] h-[400px] bg-gradient-to-b from-blue-100/70 via-indigo-50/40 to-transparent blur-3xl pointer-events-none z-0 overflow-hidden" />
 
       {/* Main Header */}
       <Header
@@ -187,7 +187,7 @@ export default function Home() {
         historyCount={historyItems.length}
       />
 
-      <main suppressHydrationWarning className="flex-grow z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 w-full pt-6 sm:pt-10 pb-16 space-y-6 sm:space-y-8">
+      <main suppressHydrationWarning className="flex-grow z-10 max-w-5xl mx-auto px-3.5 sm:px-6 lg:px-8 w-full pt-4 sm:pt-10 pb-16 space-y-5 sm:space-y-8">
         {/* BEGIN: HeroSection */}
         <section className="text-center max-w-4xl mx-auto space-y-3 sm:space-y-4" data-purpose="hero-section">
 

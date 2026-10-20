@@ -103,7 +103,7 @@ export function AnalysisProgress({ currentUpdate }: AnalysisProgressProps) {
   }, [currentUpdate?.step]);
 
   return (
-    <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl glass-card-elevated p-4 sm:p-7 space-y-5 transition-all">
+    <div className="w-full relative overflow-hidden rounded-2xl sm:rounded-3xl glass-card-elevated p-3.5 sm:p-7 space-y-4 sm:space-y-5 transition-all">
       {/* TOP SHIMMER LINE - gradient flowing */}
       <div className="absolute top-0 left-0 right-0 h-1.5 bg-slate-100 overflow-hidden">
         <div

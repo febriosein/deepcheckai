@@ -67,9 +67,9 @@ export function ReasonCard({ reasoning, indicators }: ReasonCardProps) {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="w-full space-y-5 sm:space-y-6">
       {/* BEGIN: AnalysisExplanationSection */}
-      <section className="bg-white rounded-2xl border border-slate-200/90 shadow-elevated p-5 sm:p-7 space-y-4">
+      <section className="w-full bg-white rounded-2xl border border-slate-200/90 shadow-elevated p-4 sm:p-7 space-y-4">
         <div className="flex items-center justify-between border-b border-slate-100 pb-3 sm:pb-4">
           <div className="flex items-center space-x-2.5">
             <div className="p-2 bg-blue-50 text-blue-600 rounded-lg">
@@ -105,7 +105,7 @@ export function ReasonCard({ reasoning, indicators }: ReasonCardProps) {
       {/* END: AnalysisExplanationSection */}
 
       {/* BEGIN: ForensicFindingsSection */}
-      <section className="bg-white rounded-2xl border border-slate-200/90 shadow-elevated p-5 sm:p-7 space-y-4">
+      <section className="w-full bg-white rounded-2xl border border-slate-200/90 shadow-elevated p-4 sm:p-7 space-y-4">
         {/* Findings Header with Filter Pills */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3 sm:pb-4">
           <div>
@@ -117,7 +117,7 @@ export function ReasonCard({ reasoning, indicators }: ReasonCardProps) {
             </p>
           </div>
 
-          <div className="flex items-center space-x-1.5 text-xs">
+          <div className="flex items-center space-x-1.5 text-xs overflow-x-auto pb-1 hide-scrollbar">
             <button
               type="button"
               onClick={() => setActiveFilter("all")}

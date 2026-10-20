@@ -27,6 +27,7 @@
 - [Masalah yang Diselesaikan](#-masalah-yang-diselesaikan)
 - [Fitur Utama](#-fitur-utama)
 - [Arsitektur Multi-Jalur (9 Routers)](#-arsitektur-multi-jalur-9-routers)
+- [Diagram Alir Sistem (Flowcharts)](#-diagram-alir-sistem-flowcharts)
 - [Teknologi & Dependensi](#-teknologi--dependensi)
 - [Struktur Direktori](#-struktur-direktori)
 - [Panduan Instalasi & Penggunaan Lokal](#-panduan-instalasi--penggunaan-lokal)
@@ -126,6 +127,18 @@ Sistem menggunakan alur orkestrasi dinamis 9-Router forensik:
 
 ---
 
+## 📊 Diagram Alir Sistem (Flowcharts)
+
+Dokumentasi diagram alir teknis lengkap tersedia di **[`docs/FLOWCHARTS.md`](docs/FLOWCHARTS.md)**, memuat 5 diagram alir berbasis Mermaid resmi:
+
+1. **[End-to-End System Flowchart](docs/FLOWCHARTS.md#1-flowchart-sistem-menyeluruh-end-to-end-system):** Siklus lengkap dari pemilihan tab input hingga ekspor kartu debunk WhatsApp.
+2. **[Social Media URL Resolver Pipeline](docs/FLOWCHARTS.md#2-flowchart-pengurai-tautan--media-sosial-url-resolver-pipeline):** Alur ekstraksi konten Instagram Reels, TikTok, YouTube Shorts, dan berita daring.
+3. **[9-Router AI Decision Tree](docs/FLOWCHARTS.md#3-flowchart-matriks-keputusan--pipeline-9-router-ai):** Matriks keputusan jalur routing kondisional dan batch analisis paralel.
+4. **[Real-Time Streaming SSE Sequence Diagram](docs/FLOWCHARTS.md#4-sequence-diagram-streaming-real-time-sse):** Interaksi sekuensial antara Klien Browser, Route API, Orchestrator, dan Google Gemini API.
+5. **[Verification State Machine Diagram](docs/FLOWCHARTS.md#5-state-transition-diagram-status-verifikasi):** Transisi keadaan antarmuka dari IDLE, VALIDATING, STREAMING, hingga COMPLETE.
+
+---
+
 ## 🛠️ Teknologi & Dependensi
 
 - **Core Framework:** [Next.js 16.4.2](https://nextjs.org/) (App Router & Turbopack)
@@ -144,6 +157,8 @@ Sistem menggunakan alur orkestrasi dinamis 9-Router forensik:
 
 ```text
 deepcheck/
+├── docs/
+│   └── FLOWCHARTS.md           # Dokumentasi resmi 5 diagram alir arsitektur Mermaid
 ├── public/                     # Aset publik statis (logo, logo-icon, favicon)
 ├── src/
 │   ├── app/                    # Next.js 16 App Router

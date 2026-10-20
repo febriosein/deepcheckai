@@ -71,8 +71,8 @@ _Diverifikasi melalui DeepCheck AI (Proyek PTIK). Selalu terapkan prinsip 3C: Ce
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4 overflow-y-auto animate-in fade-in duration-200">
-      <div className="relative w-full max-w-lg rounded-3xl bg-white shadow-2xl border border-slate-200 overflow-hidden animate-in zoom-in-95 duration-200 my-8">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-3 sm:p-4 overflow-y-auto animate-in fade-in duration-200">
+      <div className="relative w-full max-w-lg rounded-2xl sm:rounded-3xl bg-white shadow-2xl border border-slate-200 overflow-hidden animate-in zoom-in-95 duration-200 my-auto sm:my-8">
         {/* Modal Header */}
         <div className="flex items-center justify-between border-b border-slate-100 p-4 sm:p-5">
           <div className="flex items-center gap-2">

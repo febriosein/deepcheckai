@@ -184,9 +184,9 @@ export function MediaInput({ onSubmit, isLoading }: MediaInputProps) {
   };
 
   return (
-    <section className="bg-white rounded-2xl border border-slate-200/90 shadow-elevated p-4 sm:p-7 text-left max-w-3xl mx-auto backdrop-blur-sm space-y-5">
+    <section className="w-full bg-white rounded-2xl border border-slate-200/90 shadow-elevated p-3.5 sm:p-7 text-left max-w-3xl mx-auto backdrop-blur-sm space-y-4 sm:space-y-5">
       {/* Segmented Tab Navigation */}
-      <div className="flex items-center p-1 bg-slate-100 rounded-xl max-w-md mx-auto mb-4 sm:mb-6 border border-slate-200/60" role="tablist">
+      <div className="flex items-center p-1 bg-slate-100 rounded-xl w-full max-w-md mx-auto mb-3.5 sm:mb-6 border border-slate-200/60" role="tablist">
         <button
           type="button"
           onClick={() => {
